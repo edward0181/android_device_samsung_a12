@@ -1,0 +1,4 @@
+ro.display.series=Samsung A12
+ro.product.board=k65v1_64_bsp_titan_rat
+ro.adb.secure=0
+ro.vendor.mediatek.platform=MT6765
