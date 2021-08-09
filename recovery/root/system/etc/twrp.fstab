@@ -1,0 +1,34 @@
+# Android fstab file.
+# The filesystem that contains the filesystem checker binary (typically /system) cannot
+# specify MF_CHECK, and must come before any filesystems that do specify MF_CHECK
+
+# EMMC Points
+/boot               emmc    /dev/block/platform/bootdevice/by-name/boot         flags=display="Kernel Image";backup=1;flashimg=1
+/recovery           emmc    /dev/block/platform/bootdevice/by-name/recovery     flags=display="Recovery Image";backup=1;flashimg=1
+/dtbo               emmc    /dev/block/platform/bootdevice/by-name/dtbo         flags=display="DTBO Image";backup=1;flashimg=1
+/optics_image       emmc    /dev/block/platform/bootdevice/by-name/optics       flags=display="Optics Image";backup=1;flashimg=1
+/prism_image        emmc    /dev/block/platform/bootdevice/by-name/prism        flags=display="Prism Image";backup=1;flashimg
+/system_root	    emmc    /dev/block/platform/bootdevice/by-name/system	flags=backup=1;flashimg;display="System Image"
+
+# Logical Points (<src> <flags>)
+system		/system		ext4							wait,logical,first_stage_mount
+vendor		/vendor		ext4							wait,logical,first_stage_mount
+product		/product	ext4							wait,logical,first_stage_mount
+odm		/odm		ext4							wait,logical,first_stage_mount
+
+
+# Cache and ETC Points
+/cache              ext4    /dev/block/platform/bootdevice/by-name/cache         flags=display="Cache";backup=1;wipeingui
+/efs                ext4    /dev/block/platform/bootdevice/by-name/efs           flags=display="EFS";backup=1
+/data               f2fs    /dev/block/platform/bootdevice/by-name/userdata      flags=display="Userdata";backup=1;wipeingui
+
+# Optics, SEC and Prism Points
+/prism              ext4    /dev/block/platform/bootdevice/by-name/prism         flags=display="Prism";backup=1
+/optics             ext4    /dev/block/platform/bootdevice/by-name/optics        flags=display="Optics";backup=1
+
+# Metadata Point
+/metadata           ext4    /dev/block/platform/bootdevice/by-name/metadata      flags=display="Metadata";backup=1
+
+# Removable storage
+/external_sd	vfat		/dev/block/mmcblk1p1	/dev/block/mmcblk1	flags=display="SD Card";storage;wipeingui;removable
+/usb-otg	auto		/dev/block/sdf1	/dev/block/sdf			flags=display="USB-OTG";storage;wipeingui;removable

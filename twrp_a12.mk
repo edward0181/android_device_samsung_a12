@@ -18,6 +18,7 @@
 PRODUCT_RELEASE_NAME := a12
 
 # Inherit from the common Open Source product configuration
+#$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base.mk)
 
 $(call inherit-product, vendor/twrp/config/common.mk)
@@ -25,12 +26,19 @@ $(call inherit-product, vendor/twrp/config/common.mk)
 # Include any options that can't be included in BoardConfig.mk
 $(call inherit-product, device/samsung/a12/device.mk)
 
+#PRODUCT_SHIPPING_API_LEVEL := 29
+
+# Dynamic Partition
+PRODUCT_USE_DYNAMIC_PARTITIONS := true
+
+PRODUCT_PACKAGES += \
+    android.hardware.fastboot@1.0-impl-mock \
+    android.hardware.fastboot@1.0-impl-mock.recovery \
+    fastbootd
+
 # Charger
 PRODUCT_PACKAGES += \
     charger_res_images
-
-# Nothing
-PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,device/samsung/a12/recovery/root,recovery/root)
 
 ## Device identifier. This must come after all inclusions
 PRODUCT_NAME := twrp_a12
