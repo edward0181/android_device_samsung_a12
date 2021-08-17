@@ -4,4 +4,4 @@ persist.sys.usb.config=mtp
 ro.product.board=mt6765
 ro.board.platform=mt6765
 ro.boot.dynamic_partitions=true
-ro.boot.boot_devices=bootdevice,soc/11230000.mmc,11230000.mmc,soc/11270000.ufshci,11270000.ufshci
+ro.sys.usb.storage.type=mtp
