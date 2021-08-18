@@ -9,6 +9,8 @@ on fs && property:ro.debuggable=0
     start adbd
 
  export ANDROID_ROOT /system
+ export ANDROID_DATA /data
+ export EXTERNAL_STORAGE /sdcard
 
     wait /dev/block/platform/${ro.boot.boot_devices}
     symlink /dev/block/platform/${ro.boot.boot_devices} /dev/block/bootdevice
