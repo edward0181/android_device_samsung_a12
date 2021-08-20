@@ -23,7 +23,7 @@ odm		/odm		ext4							display="Odm";logical,first_stage_mount
 # Cache and ETC Points
 /cache              ext4    /dev/block/platform/bootdevice/by-name/cache         flags=display="Cache";backup=1;wipeingui
 /efs                ext4    /dev/block/platform/bootdevice/by-name/efs           flags=display="EFS";backup=1
-/data               f2fs    /dev/block/platform/bootdevice/by-name/userdata      flags=display="Userdata";backup=1;wipeingui
+/data               f2fs    /dev/block/platform/bootdevice/by-name/userdata      flags=fileencryption=ice,keydirectory=/metadata/vold/metadata_encryption;display="Data";wipeingui;backup=1
 
 # Optics, SEC and Prism Points
 /prism              ext4    /dev/block/platform/bootdevice/by-name/prism         flags=display="Prism";backup=1
@@ -31,7 +31,7 @@ odm		/odm		ext4							display="Odm";logical,first_stage_mount
 /gz1	            emmc    /dev/block/platform/bootdevice/by-name/gz1           flags=display="gz1"
 
 # Metadata Point
-/metadata           ext4    /dev/block/platform/bootdevice/by-name/metadata      flags=display="Metadata";backup=1
+/metadata           ext4    /dev/block/platform/bootdevice/by-name/metadata      flags=display="Metadata";backup=1;wrappedkey
 
 # FOTA
 /modem             emmc     /dev/block/platform/bootdevice/by-name/apnhlos     flags=display="Modem"
