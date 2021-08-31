@@ -139,6 +139,7 @@ BOARD_SUPPRESS_SECURE_ERASE := true
 TARGET_RECOVERY_FSTAB := device/samsung/a12/recovery.fstab
 
 # TWRP Configuration
+TW_THEME := portrait_hdpi
 TW_EXTRA_LANGUAGES := true
 TW_INCLUDE_NTFS_3G := true
 TW_USE_TOOLBOX := false
