@@ -1,0 +1,66 @@
+name: ACTIONS_BUILD_TWRP
+
+# Actions TWRP Builder for V430A
+
+on:
+  watch:
+    types: [started]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.event.repository.owner.id == github.event.sender.id
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+    
+    - name: Clean Up
+      run: |
+        docker rmi `docker images -q`
+        sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d
+        sudo -E apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* php*
+        sudo -E apt-get update
+        sudo -E apt-get -y autoremove --purge
+        sudo -E apt-get clean 
+    - name: Environment Setting up
+      run: |
+        sudo apt update && sudo apt upgrade -y
+        sudo apt install libncurses5 -y
+        git config --global user.name "Edward0181"
+        git config --global user.email "edwardroggeveen@gmail.com"
+        sudo apt-get install git-core gnupg flex bison gperf build-essential zip curl zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z-dev libgl1-mesa-dev libxml2-utils xsltproc unzip -y
+    - name: Install Repo
+      run: |
+        mkdir ~/bin
+        curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+        echo "Downloaded repo"
+        chmod a+x ~/bin/repo
+        PATH=~/bin:$PATH
+        mkdir workspace
+        cd workspace
+        echo "The workspace is ready!"
+    - name: Syncing Work Tree
+      run : |
+        PATH=~/bin:$PATH
+        echo "Setting up PATH"
+        git config --global user.name "Edward0181"
+        git config --global user.email "edwardroggeveen@gmail.com"
+        repo init --depth=1 -u git://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11
+        repo sync -c -j$(nproc --all) --force-sync
+        git clone https://github.com/edward0181/android_device_samsung_a12 -b twrp-11.0 device/samsung/a12
+        # Fix busybox
+        # Thanks at @Pinkdoge
+        git clone https://github.com/TeamWin/android_external_busybox/ -b android-9.0 external/busybox
+    - name: Building Recovery Image
+      run : |
+        . build/envsetup.sh
+        export ALLOW_MISSING_DEPENDENCIES=true
+        lunch twrp_a12-eng
+        mka recoveryimage -j$(nproc --all)
+        mv $OUT/recovery.img ./recovery.img
+    - name: Upload TWRP 
+      uses: actions/upload-artifact@master
+      with: 
+       name: TWRP
+       path: recovery.img
