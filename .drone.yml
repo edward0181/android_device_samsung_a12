@@ -8,4 +8,4 @@ steps:
 - name: building
   image: fr3akyphantom/droid-builder:latest
   commands:
-  - bash /scripts/make-device.sh
+  - bash scripts/make-device.sh
