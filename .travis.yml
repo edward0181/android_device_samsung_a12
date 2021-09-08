@@ -1,18 +1,8 @@
+language: android
 os: linux
 dist: bionic
 
-on:
-#  release:
-#    types: [published]
-#  push:
-#    branches:
-#      - master
-#    paths:
-#      - '.config'
-#  schedule:
-#    - cron: 0 8 * * 5
-# Allows you to run this workflow manually from the Actions tab
-    
+   
 env:
   MANIFEST: git://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11
   DEVICE: a12
