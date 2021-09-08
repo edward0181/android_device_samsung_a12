@@ -8,18 +8,9 @@ on fs && property:ro.debuggable=0
     # set charging free due to it wait for USB activation
     start adbd
 
- export ANDROID_ROOT /system_root
-
-    wait /dev/block/platform/${ro.boot.boot_devices}
-    symlink /dev/block/platform/${ro.boot.boot_devices} /dev/block/bootdevice
-    symlink /dev/block/platform/${ro.boot.boot_devices}/by-name /dev/block/by-name
-    symlink /dev/block/platform/${ro.boot.boot_devices}/by-name/param /dev/block/param
-
 on post-fs
     # Support A/B feature for emmc boot region
     symlink /dev/block/sda /dev/block/mmcblk0boot0
     symlink /dev/block/sdb /dev/block/mmcblk0boot1
     symlink /dev/block/mmcblk0boot0 /dev/block/platform/bootdevice/by-name/preloader_a
     symlink /dev/block/mmcblk0boot1 /dev/block/platform/bootdevice/by-name/preloader_b
-
-    exec u:r:update_engine:s0 root root -- /system/bin/mtk_plpath_utils

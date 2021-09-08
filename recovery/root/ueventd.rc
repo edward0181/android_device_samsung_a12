@@ -29,12 +29,11 @@ subsystem sound
 /dev/full                 0666   root       root
 /dev/ptmx                 0666   root       root
 /dev/tty                  0666   root       root
-/dev/ttyS0                0660   root       radio
 /dev/random               0666   root       root
 /dev/urandom              0666   root       root
 # Make HW RNG readable by group system to let EntropyMixer read it.
 /dev/hw_random            0440   root       system
-/dev/ashmem*              0666   root       root
+/dev/ashmem               0666   root       root
 /dev/binder               0666   root       root
 /dev/hwbinder             0666   root       root
 /dev/vndbinder            0666   root       root
@@ -57,27 +56,18 @@ subsystem sound
 /dev/mtp_usb              0660   root       mtp
 /dev/usb_accessory        0660   root       usb
 /dev/tun                  0660   system     vpn
-/dev/input/event*         0660   system     input
 
 # CDMA radio interface MUX
 /dev/ppp                  0660   radio      vpn
 
 # sysfs properties
 /sys/devices/platform/trusty.*      trusty_version        0440  root   log
-/sys/devices/virtual/input/input*   enable      0660  system   input
-/sys/devices/virtual/input/input*   poll_delay  0660  system   input
+/sys/devices/virtual/input/input*   enable      0660  root   input
+/sys/devices/virtual/input/input*   poll_delay  0660  root   input
 /sys/devices/virtual/usb_composite/*   enable      0664  root   system
 /sys/devices/system/cpu/cpu*   cpufreq/scaling_max_freq   0664  system system
 /sys/devices/system/cpu/cpu*   cpufreq/scaling_min_freq   0664  system system
-/sys/devices/virtual/thermal/cooling_device* cur_state	0664 system system
 
-# Sensor Hub
-/dev/ssp_sensorhub        0660   system     system
-/dev/ssp_data_injection   0660   system     system
-/dev/iio:device*          0660   system	    system
-/sys/devices/platform/ssp/iio:device*    buffer/enable       0660    system    system
-/sys/devices/platform/ssp/iio:device*    buffer/length       0660    system    system
-/sys/bus/iio/devices/iio:device*    0664   system     radio
-
-# tzic driver
-/dev/tzic             0660   system     net_bt_admin
+#SPD: add by yu.zhou2 for Bringup system monitor feature. @Start
+/dev/ensignal             0666   root       root
+#SPD: add by yu.zhou2 for Bringup system monitor feature. @End

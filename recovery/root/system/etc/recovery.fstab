@@ -1,85 +1,59 @@
+#fstab file by lopestom
+#
+#mount point     fstype           device                                                   flags
+#System partitions
 
-#<src>                                    <mnt_point>    <type>    <mnt_flags and options>    <fs_mgr_flags>
-/dev/block/platform/bootdevice/by-name/system         /system       ext4        ro      wait,avb=vbmeta_samsung,logical,first_stage_mount,avb_keys=/avb/q-gsi.avbpubkey:/avb/r-gsi.avbpubkey:/avb/s-gsi.avbpubkey,
-/dev/block/platform/bootdevice/by-name/vendor         /vendor       ext4        ro      wait,avb,logical,first_stage_mount
-/dev/block/platform/bootdevice/by-name/product        /product      ext4        ro      wait,avb,logical,first_stage_mount
-/dev/block/platform/bootdevice/by-name/odm            /odm          ext4        ro      wait,avb,logical,first_stage_mount
+/system		   ext4	         /dev/block/mapper/system                                  flags=backup=1;display="System";flashimg=1;wipeingui
+/vendor            ext4          /dev/block/mapper/vendor                                  flags=backup=1;display="Vendor";flashimg=1;wipeingui
+/product           ext4          /dev/block/mapper/product                                 flags=backup=1;display="Product";flashimg=1;wipeingui
+/super_image       emmc          /dev/block/platform/bootdevice/by-name/super              flags=backup=1;display="Super"
+/odm		   ext4	         /dev/block/mapper/odm					   flags=backup=1;display="Odm";flashimg=1;wipeingui
 
-# Metadata
-/dev/block/platform/bootdevice/by-name/md_udc          /metadata              ext4     noatime,nosuid,nodev,noauto_da_alloc,discard,journal_checksum,data=ordered,errors=panic	wait,formattable,first_stage_mount,check
 
-# Cache/Data/EFS Point
-/dev/block/platform/bootdevice/by-name/cache           /cache                 ext4     noatime,nosuid,nodev,noauto_da_alloc,discard,journal_checksum,data=ordered,errors=panic	wait,check,formattable
-/dev/block/platform/bootdevice/by-name/efs             /mnt/vendor/efs        ext4     noatime,nosuid,nodev,noauto_da_alloc,discard,journal_checksum,data=ordered,errors=panic	wait,check,formattable
+/metadata	  emmc           /dev/block/platform/bootdevice/by-name/metadata           flags=backup=1;flashimg=1
+/data             f2fs           /dev/block/platform/bootdevice/by-name/userdata           flags=backup=1;encryptable=/dev/block/platform/bootdevice/by-name/metadata 
+/boot             emmc           /dev/block/platform/bootdevice/by-name/boot               flags=backup=1;display="boot";flashimg=1
+/dtbo             emmc           /dev/block/platform/bootdevice/by-name/dtbo               flags=backup=1;display="Dtbo";flashimg=1
+/odmdtbo          emmc           /dev/block/platform/bootdevice/by-name/odmdtbo            flags=backup=1;display="Odmdtbo"
+/cache            ext4           /dev/block/platform/bootdevice/by-name/cache              flags=backup=1;wipeingui;wipeduringfactoryreset
+/recovery	  emmc           /dev/block/platform/bootdevice/by-name/recovery           flags=display="recovery";backup=1;flashimg=1
+/vbmeta	          emmc           /dev/block/platform/bootdevice/by-name/vbmeta             flags=display="vbmeta";backup=1;flashimg=1
+/vbmeta_system    emmc           /dev/block/platform/bootdevice/by-name/vbmeta_system      flags=backup=1;display="vbmeta_system";flashimg=1
+/vbmeta_samsung   emmc           /dev/block/platform/bootdevice/by-name/vbmeta_samsung     flags=backup=1;display="vbmeta_samsung";flashimg=1
+/bootloader       emmc           /dev/block/platform/bootdevice/by-name/lk                 flags=backup=1;display="bootloader";flashimg=1
+/bootloader2      emmc           /dev/block/platform/bootdevice/by-name/lk2                flags=backup=1;subpartitionof=/bootloader
+/logo		  emmc	         /dev/block/platform/bootdevice/by-name/logo               flags=display="logo";backup=1;flashimg=1
+/nvcfg		  ext4           /dev/block/platform/bootdevice/by-name/nvcfg              flags=display="NvCfg";backup=1;flashimg=1
+/nvdata		  ext4           /dev/block/platform/bootdevice/by-name/nvdata             flags=display="NvData";backup=1;flashimg=1
+/nvram		  emmc	         /dev/block/platform/bootdevice/by-name/nvram              flags=display="NvRam";backup=1;flashimg=1
+/protect_f	  ext4           /dev/block/platform/bootdevice/by-name/protect1           flags=display="Protect";backup=1
+/protect_s	  ext4           /dev/block/platform/bootdevice/by-name/protect2           flags=backup=1;subpartitionof=/protect_f
+/persistent	  emmc           /dev/block/platform/bootdevice/by-name/frp                flags=display="frp";backup=1;flashimg=1
+/md1img		  emmc           /dev/block/platform/bootdevice/by-name/md1img             flags=display="Modem";backup=1;flashimg=1
+/misc		  emmc		 /dev/block/bootdevice/by-name/misc
 
-# ETC Point
-/dev/block/platform/bootdevice/by-name/protect1        /mnt/vendor/protect_f  ext4     noatime,nosuid,nodev,noauto_da_alloc,discard,journal_checksum,data=ordered,errors=panic	wait,check,formattable
-/dev/block/platform/bootdevice/by-name/protect2        /mnt/vendor/protect_s  ext4     noatime,nosuid,nodev,noauto_da_alloc,discard,journal_checksum,data=ordered,errors=panic	wait,check,formattable
-/dev/block/platform/bootdevice/by-name/nvdata          /mnt/vendor/nvdata	  ext4     noatime,nosuid,nodev,noauto_da_alloc,discard,journal_checksum,data=ordered,errors=panic	wait,check,formattable
-/dev/block/platform/bootdevice/by-name/nvcfg           /mnt/vendor/nvcfg	  ext4     noatime,nosuid,nodev,noauto_da_alloc,discard,journal_checksum,data=ordered,errors=panic	wait,check,formattable
-/dev/block/platform/bootdevice/by-name/keydata         /keydata               ext4     noatime,nosuid,nodev,noauto_da_alloc,discard,journal_checksum,data=ordered,errors=panic	wait,check,formattable,fileencryption=aes-256-xts,nofail
-/dev/block/platform/bootdevice/by-name/keyrefuge	   /keyrefuge             ext4     noatime,nosuid,nodev,noauto_da_alloc,discard,journal_checksum,data=ordered,errors=panic	wait,check,formattable,fileencryption=aes-256-xts,nofail
-/dev/block/platform/bootdevice/by-name/nvram           /nvram                 emmc     defaults defaults
-/dev/block/platform/bootdevice/by-name/proinfo         /proinfo               emmc     defaults defaults
-/dev/block/platform/bootdevice/by-name/lk              /bootloader            emmc     defaults defaults
-/dev/block/platform/bootdevice/by-name/lk2             /bootloader2           emmc     defaults defaults
-/dev/block/platform/bootdevice/by-name/para            /para                  emmc     defaults defaults
-/dev/block/platform/bootdevice/by-name/misc            /misc                  emmc     defaults defaults
-/dev/block/platform/bootdevice/by-name/vbmeta_vendor   /vbmeta_vendor         emmc     defaults first_stage_mount,nofail,
-/dev/block/platform/bootdevice/by-name/vbmeta_samsung  /vbmeta_samsung        emmc     defaults first_stage_mount,nofail,,avb=vbmeta
-/dev/block/platform/bootdevice/by-name/logo            /logo                  emmc     defaults defaults
-/dev/block/platform/bootdevice/by-name/expdb           /expdb                 emmc     defaults defaults
-/dev/block/platform/bootdevice/by-name/seccfg          /seccfg                emmc     defaults defaults
-/dev/block/platform/bootdevice/by-name/tee1            /tee1                  emmc     defaults defaults
-/dev/block/platform/bootdevice/by-name/tee2            /tee2                  emmc     defaults defaults
-/dev/block/platform/bootdevice/by-name/scp1            /scp1                  emmc     defaults defaults
-/dev/block/platform/bootdevice/by-name/scp2            /scp2                  emmc     defaults defaults
-/dev/block/platform/bootdevice/by-name/sspm_1          /sspm_1                emmc     defaults defaults
-/dev/block/platform/bootdevice/by-name/sspm_2          /sspm_2                emmc     defaults defaults
-/dev/block/platform/bootdevice/by-name/efuse           /efuse                 emmc     defaults defaults
-/dev/block/platform/bootdevice/by-name/md1img          /md1img                emmc     defaults defaults
-/dev/block/platform/bootdevice/by-name/md1dsp          /md1dsp                emmc     defaults defaults
-/dev/block/platform/bootdevice/by-name/md1arm7         /md1arm7               emmc     defaults defaults
-/dev/block/platform/bootdevice/by-name/md3img          /md3img                emmc     defaults defaults
-/dev/block/platform/bootdevice/by-name/spmfw           /spmfw                 emmc     defaults defaults
-/dev/block/platform/bootdevice/by-name/boot_para       /boot_para             emmc     defaults defaults
-/dev/block/platform/bootdevice/by-name/odmdtbo         /odmdtbo               emmc     defaults defaults
-/dev/block/platform/bootdevice/by-name/vbmeta          /vbmeta                emmc     defaults defaults
-/dev/block/platform/bootdevice/by-name/gz1             /gz1                   emmc     defaults defaults
-/dev/block/platform/bootdevice/by-name/uh              /uh                    emmc     defaults defaults
-/dev/block/platform/bootdevice/by-name/boot        /boot           emmc        defaults                  recoveryonly
-/dev/block/platform/bootdevice/by-name/recovery    /recovery       emmc        defaults                  recoveryonly
-/dev/block/platform/bootdevice/by-name/userdata	/data	f2fs	noatime,nosuid,nodev,discard,usrquota,grpquota,fsync_mode=nobarrier,reserve_root=32768,resgid=5678	wait,length=-16384
-
-# external SD card
-/dev/block/mmcblk1p1                               /sdcard         sdfat       defaults                  recoveryonly
-
-# FOTA
-/dev/block/platform/bootdevice/by-name/apnhlos     /modem          emmc        defaults                  recoveryonly
-/dev/block/platform/bootdevice/by-name/modem       /mdm            emmc        defaults                  recoveryonly
-/dev/block/platform/bootdevice/by-name/dsp         /dsp            emmc        defaults                  recoveryonly
-/dev/block/platform/bootdevice/by-name/dtbo        /dtbo           emmc        defaults                  recoveryonly
-/dev/block/platform/bootdevice/by-name/md1img      /md1img         emmc        defaults                  recoveryonly
-/dev/block/platform/bootdevice/by-name/spmfw       /spmfw          emmc        defaults                  recoveryonly
-/dev/block/platform/bootdevice/by-name/scp1        /scp1           emmc        defaults                  recoveryonly
-/dev/block/platform/bootdevice/by-name/sspm_1      /sspm_1         emmc        defaults                  recoveryonly
+# Optics, SEC and Prism Points
+/prism            ext4    	 /dev/block/platform/bootdevice/by-name/prism        	   flags=display="Prism";backup=1
+/optics           ext4    	 /dev/block/platform/bootdevice/by-name/optics             flags=display="Optics";backup=1
 
 # Samsung ODE
-/dev/block/platform/bootdevice/by-name/keydata     /keydata        ext4        defaults                  recoveryonly
-/dev/block/platform/bootdevice/by-name/keyrefuge   /keyrefuge      ext4        defaults                  recoveryonly
+/keydata           ext4     	/dev/block/platform/bootdevice/by-name/keydata     	flags=display="Keydata"
+/keyrefuge         ext4     	/dev/block/platform/bootdevice/by-name/keyrefuge   	flags=display="Keyrefuge"
+
+# FOTA
+/dsp               emmc     /dev/block/platform/bootdevice/by-name/dsp         flags=display="Dsp"
+/modem             emmc     /dev/block/platform/bootdevice/by-name/apnhlos     flags=display="Modem"
+/mdm               emmc     /dev/block/platform/bootdevice/by-name/modem       flags=display="Mdm"
+/spmfw             emmc     /dev/block/platform/bootdevice/by-name/spmfw       flags=display="Spmfw"
+/scp1              emmc     /dev/block/platform/bootdevice/by-name/scp1        flags=display="Scp1"
+/sspm_1            emmc     /dev/block/platform/bootdevice/by-name/sspm_1      flags=display="Sspm1"
+
+# External-Devices (SDCARD | OTG)
+/external_sd      vfat            /dev/block/mmcblk1p1  /dev/block/mmcblk1                 flags=display="External_SDcard";storage;wipeingui;removable
+/usb-otg          auto            /dev/block/sda1  /dev/block/sda                          flags=display="Usb_Otg";storage;wipeingui;removable
 
 
-#Auto-generated code by FOTA Portal
-/dev/block/platform/bootdevice/by-name/gz1	/gz1	emmc	default	recoveryonly
-/dev/block/platform/bootdevice/by-name/optics	/optics	ext4	default	recoveryonly
-/dev/block/platform/bootdevice/by-name/prism	/prism	ext4	default	recoveryonly
 
-/dev/block/platform/bootdevice/by-name/vbmeta_vendor   /vbmeta_vendor         emmc     defaults first_stage_mount,nofail,
-/dev/block/platform/bootdevice/by-name/vbmeta_samsung  /vbmeta_samsung        emmc     defaults first_stage_mount,nofail,,avb=vbmeta
 
-#Auto-generated code by FOTA Portal
-/dev/block/platform/bootdevice/by-name/cam_vpu1	/cam_vpu1	emmc	default	recoveryonly
-/dev/block/platform/bootdevice/by-name/cam_vpu2	/cam_vpu2	emmc	default	recoveryonly
-/dev/block/platform/bootdevice/by-name/cam_vpu3	/cam_vpu3	emmc	default	recoveryonly
-/dev/block/platform/bootdevice/by-name/pi_img	/pi_img	emmc	default	recoveryonly
+
 
