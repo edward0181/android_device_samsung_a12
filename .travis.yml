@@ -1,66 +1,72 @@
-name: ACTIONS_BUILD_TWRP
-
-# Actions TWRP Builder for V430A
+name: Building recovery
 
 on:
+#  release:
+#    types: [published]
+#  push:
+#    branches:
+#      - master
+#    paths:
+#      - '.config'
+#  schedule:
+#    - cron: 0 8 * * 5
+# Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
   watch:
     types: [started]
 
+env:
+  MANIFEST: git://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11
+  DEVICE: a12
+  DT_LINK: https://github.com/edward0181/android_device_samsung_a12
+  DT_PATH: device/samsung/a12
+  TARGET: recoveryimage
+  TZ: Europe/Amsterdam
+  CHAT_ID: ${{ secrets.TEST_CHAT_ID }}
+  BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+
 jobs:
   build:
-    runs-on: ubuntu-latest
-    if: github.event.repository.owner.id == github.event.sender.id
+    runs-on: ubuntu-18.04
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@master
-    
-    - name: Clean Up
-      run: |
-        docker rmi `docker images -q`
-        sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d
-        sudo -E apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* php*
-        sudo -E apt-get update
-        sudo -E apt-get -y autoremove --purge
-        sudo -E apt-get clean 
-    - name: Environment Setting up
-      run: |
-        sudo apt update && sudo apt upgrade -y
-        sudo apt install libncurses5 -y
-        git config --global user.name "Edward0181"
-        git config --global user.email "edwardroggeveen@gmail.com"
-        sudo apt-get install git-core gnupg flex bison gperf build-essential zip curl zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z-dev libgl1-mesa-dev libxml2-utils xsltproc unzip -y
-    - name: Install Repo
-      run: |
-        mkdir ~/bin
-        curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
-        echo "Downloaded repo"
-        chmod a+x ~/bin/repo
-        PATH=~/bin:$PATH
-        mkdir workspace
-        cd workspace
-        echo "The workspace is ready!"
-    - name: Syncing Work Tree
-      run : |
-        PATH=~/bin:$PATH
-        echo "Setting up PATH"
-        git config --global user.name "Edward0181"
-        git config --global user.email "edwardroggeveen@gmail.com"
-        repo init --depth=1 -u git://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11
-        repo sync -c -j$(nproc --all) --force-sync
-        git clone https://github.com/edward0181/android_device_samsung_a12 -b twrp-11.0 device/samsung/a12
-        # Fix busybox
-        # Thanks at @Pinkdoge
-        git clone https://github.com/TeamWin/android_external_busybox/ -b android-9.0 external/busybox
-    - name: Building Recovery Image
-      run : |
-        . build/envsetup.sh
-        export ALLOW_MISSING_DEPENDENCIES=true
-        lunch twrp_a12-eng
-        mka recoveryimage -j$(nproc --all)
-        mv $OUT/recovery.img ./recovery.img
-    - name: Upload TWRP 
-      uses: actions/upload-artifact@master
-      with: 
-       name: TWRP
-       path: recovery.img
+       - name: Checkout
+         uses: actions/checkout@master
+         
+       - name: Initializing environment
+         run: |
+            sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d
+            docker rmi `docker images -q`
+            sudo apt-get remove account-plugin-facebook account-plugin-flickr account-plugin-jabber account-plugin-salut account-plugin-twitter account-plugin-windows-live account-plugin-yahoo aisleriot brltty duplicity empathy empathy-common example-content gnome-accessibility-themes gnome-contacts gnome-mahjongg gnome-mines gnome-orca gnome-screensaver gnome-sudoku gnome-video-effects gnomine landscape-common libreoffice-avmedia-backend-gstreamer libreoffice-base-core libreoffice-calc libreoffice-common libreoffice-core libreoffice-draw libreoffice-gnome libreoffice-gtk libreoffice-impress libreoffice-math libreoffice-ogltrans libreoffice-pdfimport libreoffice-style-galaxy libreoffice-style-human libreoffice-writer libsane libsane-common mcp-account-manager-uoa python3-uno rhythmbox rhythmbox-plugins rhythmbox-plugin-zeitgeist sane-utils shotwell shotwell-common telepathy-gabble telepathy-haze telepathy-idle telepathy-indicator telepathy-logger telepathy-mission-control-5 telepathy-salut totem totem-common totem-plugins printer-driver-brlaser printer-driver-foo2zjs printer-driver-foo2zjs-common printer-driver-m2300w printer-driver-ptouch printer-driver-splix
+            git config --global user.name "Edward0181"
+            git config --global user.email "edwardroggeveen@gmail.com"         
+            sudo -E apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* php* 
+            sudo -E apt-get clean 
+            sudo -E apt-get -qq update
+            sudo -E apt-get -qq install bc build-essential zip curl libstdc++6 git wget python gcc clang libssl-dev repo rsync flex curl  bison aria2
+            sudo curl --create-dirs -L -o /usr/local/bin/repo -O -L https://storage.googleapis.com/git-repo-downloads/repo
+            sudo chmod a+rx /usr/local/bin/repo
+            
+       - name: Sync recovery source and device tree
+         run: |
+             mkdir work
+             cd work
+             repo init -u $MANIFEST --depth=1 --groups=all,-notdefault,-device,-darwin,-x86,-mips
+             repo sync -j`nproc`
+             git clone $DT_LINK --depth=1 --single-branch $DT_PATH
+             
+       - name: Building TWRP
+         run: |
+              cd work
+              . build/envsetup.sh &&lunch twrp_$DEVICE-eng &&export ALLOW_MISSING_DEPENDENCIES=true && mka $TARGET
+             
+       - name: Uploading recovery image
+         run: |
+              cd work/out/target/product/$DEVICE
+              sudo zip -r9 TWRP-a12.zip recovery.img
+              ls > ls.txt
+              curl -F chat_id=$CHAT_ID -F document=@ls.txt -F parse_mode=markdown https://api.telegram.org/bot$BOT_TOKEN/sendDocument -F caption="Check it out @edward0181"
+              curl -F chat_id=$CHAT_ID -F document=@TWRP-a12.zip https://api.telegram.org/bot$BOT_TOKEN/sendDocument -F caption="Please test it @edward0181"
+              curl -sL https://git.io/file-transfer | sh
+              ./transfer wet TWRP-a12.zip
+              ./transfer wet recovery.img
