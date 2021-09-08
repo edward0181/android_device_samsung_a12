@@ -1,9 +1,6 @@
 #!/bin/bash
 set -ev
 #installing needed appts
-mkdir ~/bin
-curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
-chmod a+x ~/bin/repo
 source ~/.bashrc
 # Create dirs
 mkdir tw; cd tw
