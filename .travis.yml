@@ -22,9 +22,7 @@ env:
   DT_PATH: device/samsung/a12
   TARGET: recoveryimage
   TZ: Europe/Amsterdam
-  CHAT_ID: ${{ secrets.TEST_CHAT_ID }}
-  BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-
+ 
 jobs:
   build:
     runs-on: ubuntu-18.04
