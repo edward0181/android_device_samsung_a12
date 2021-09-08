@@ -12,8 +12,3 @@ repo sync -c -q --force-sync --no-clone-bundle --no-tags -j$(nproc --all)
 git clone https://github.com/edward0181/android_device_samsung_a12 -b twrp-11.0 device/samsung/a12
 # Build recovery image
 export ALLOW_MISSING_DEPENDENCIES=true; . build/envsetup.sh; repo sync; lunch twrp_a12-eng; mka recoveryimage
-# Rename and copy the files
-twrp_version=$(cat ~/TWRP/bootable/recovery/variables.h | grep "define TW_MAIN_VERSION_STR" | cut -d '"' -f2)
-date_time=$(date +"%d%m%Y%H%M")
-mkdir ~/final
-cp recovery.img ~/final/twrp-$twrp_version-a12-"$date_time"-unofficial.img
