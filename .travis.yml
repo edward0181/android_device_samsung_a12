@@ -1,6 +1,6 @@
 language: android
 os: linux
-dist: bionic
+dist: trusty
 
    
 env:
