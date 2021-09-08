@@ -1,4 +1,6 @@
-name: Building recovery
+language: android
+os: linux
+dist: bionic
 
 on:
 #  release:
@@ -14,7 +16,7 @@ on:
   workflow_dispatch:
   watch:
     types: [started]
-
+    
 env:
   MANIFEST: git://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11
   DEVICE: a12
@@ -25,8 +27,6 @@ env:
  
 jobs:
   build:
-    runs-on: ubuntu-18.04
-
     steps:
        - name: Checkout
          uses: actions/checkout@master
