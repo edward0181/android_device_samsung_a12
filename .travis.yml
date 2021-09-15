@@ -1,5 +1,0 @@
-language: android
-os: linux
-dist: trusty
-
-script: ./scripts/make-device.sh
