@@ -1,4 +1,5 @@
 # Team Win Recovery Project for the Samsung Galaxy A12 (WIP)
+Working all, except ENCRYPT / DECRYPT
 
 ### How to build ###
 
