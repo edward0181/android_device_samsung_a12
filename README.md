@@ -2,6 +2,8 @@
 Added custom kernel building
 Working all, except ENCRYPT / DECRYPT
 
+Thanks @Physwizz for kernel sources.
+
 ### How to build ###
 
 ```bash
@@ -16,7 +18,7 @@ $ repo init --depth=1 -u git://github.com/minimal-manifest-twrp/platform_manifes
 $ git clone https://github.com/edward0181/android_device_samsung_a12 -b twrp-11.0 device/samsung/a12
 
 # Clone a12 kernel
-$ git clone https://github.com/edward0181/android_kernel_samsung_a12.git kernel/samsung/a12
+$ git clone https://github.com/physwizz/a125f.git kernel/samsung/a12
 
 # Sync
 $ repo sync --no-repo-verify -c --force-sync --no-clone-bundle --no-tags --optimized-fetch --prune -j`nproc`
