@@ -19,3 +19,7 @@ $ repo sync --no-repo-verify -c --force-sync --no-clone-bundle --no-tags --optim
 # Build
 $ source build/envsetup.sh; export ALLOW_MISSING_DEPENDENCIES=true; lunch twrp_a12-eng; mka recoveryimage
 ```
+
+### WORKING: ###
+ADB, MTP, SIDELOADING
+Decryption isn't working!
