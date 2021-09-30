@@ -1,6 +1,8 @@
-ro.secure=0
-ro.adb.secure=0
-ro.debuggable=1
-persist.sys.usb.config=mtp,adb
-persist.service.adb.enable=1
-persist.service.debuggable=1
+ro.display.series=Samsung A12
+ro.vendor.mediatek.platform=mt6765
+ro.product.board=mt6765
+ro.board.platform=mt6765
+ro.boot.dynamic_partitions=true
+ro.sys.usb.storage.type=mtp
+ro.sys.usb.mtp.whql.enable=0
+persist.sys.usb.config=mtp
