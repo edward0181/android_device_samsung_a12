@@ -21,5 +21,6 @@ $ source build/envsetup.sh; export ALLOW_MISSING_DEPENDENCIES=true; lunch twrp_a
 ```
 
 ### WORKING: ###
-ADB, MTP, SIDELOADING
+ADB, MTP, SIDELOADING.
+
 Decryption isn't working!
