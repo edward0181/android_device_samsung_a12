@@ -81,3 +81,13 @@ subsystem sound
 
 # tzic driver
 /dev/tzic             0660   system     net_bt_admin
+
+# CIQ IQI node
+/dev/ccci_ciq             0660   system     bridge_rw
+
+# S-RIL
+/dev/umts_*               0660   system      radio
+/dev/cdma_*               0660   system      radio
+
+# dev ril bridge
+/dev/drb                  0660   system      radio

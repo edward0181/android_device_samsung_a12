@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2021 Durasame
+# Copyright (C) 2020 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,5 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 LOCAL_PATH := device/samsung/a12
 
+# Dynamic partitions
+PRODUCT_USE_DYNAMIC_PARTITIONS := true
+
+# fastbootd
+PRODUCT_PACKAGES += \
+    android.hardware.fastboot@1.0-impl-mock \
+    fastbootd
