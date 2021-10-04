@@ -12,9 +12,11 @@ on boot
     setprop ro.boot.avb_version 1.1
 
 on fs
-#@RECOVERY [For reon init
-    setprop sys.usb.configfs 1
-    setprop sys.usb.ffs.aio_compat 1
+#@RECOVERY [For reboot reason.
+    symlink /dev/block/by-name/param /dev/block/param
+    chown root system /dev/block/param
+    chmod 0666 /dev/block/param
+#]
 
 on fs && property:ro.debuggable=0
     # distinguish USB shoulde connect or not, i.e. CDP vs SDP
