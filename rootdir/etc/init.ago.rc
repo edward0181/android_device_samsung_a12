@@ -1,0 +1,7 @@
+# ago_default is the init flow for the project > 1G
+
+on post-fs-data && property:ro.crypto.type=block
+    mkdir /data/unencrypted
+
+on post-fs-data && property:ro.crypto.state=unencrypted
+    mkdir /data/unencrypted

@@ -1,0 +1,69 @@
+# Copyright (C) 2012 The Android Open Source Project
+#
+# IMPORTANT: Do not create world writable files or directories.
+# This is a common source of Android security bugs.
+#
+
+on early-init
+    write /sys/class/net/ccmni0/queues/rx-0/rps_cpus "ff"
+    write /sys/class/net/ccmni1/queues/rx-0/rps_cpus "ff"
+    write /sys/class/net/ccmni2/queues/rx-0/rps_cpus "ff"
+    write /sys/class/net/ccmni0/queues/rx-0/rps_flow_cnt "1000"
+    write /sys/class/net/ccmni1/queues/rx-0/rps_flow_cnt "1000"
+    write /sys/class/net/ccmni2/queues/rx-0/rps_flow_cnt "1000"
+
+on post-fs-data
+
+    write /proc/bootprof "post-fs-data: on modem start"
+
+# Encrypt phone function
+    setprop vold.post_fs_data_done 1
+
+service md_minilog_util /vendor/bin/md_minilog_util
+    user radio
+    disabled
+    oneshot
+
+#VIA RILD service
+service viarild /vendor/bin/viarild -l /vendor/lib/libviatelecom-withuim-ril.so -- -d /dev/ttySDIO4
+    class core
+    socket rild-via stream 660 radio radio
+    socket msap_c2k_socket1 stream 660 radio radio
+    socket msap_c2k_socket2 stream 660 radio radio
+    socket msap_c2k_socket3 stream 660 radio radio
+    socket msap_c2k_socket4 stream 660 radio radio
+    socket rpc stream 660 radio system
+    socket rildc-debug stream 660 radio system
+    socket rild-ctclient stream 660 radio system
+    socket rild-atci-c2k stream 660 radio system
+    group radio cache inet misc audio sdcard_r sdcard_rw log system
+    disabled
+    oneshot
+
+#
+#  Modem related services (Begin)
+#
+
+service permission_check /vendor/bin/permission_check
+    class main
+    user root
+    group system radio
+    oneshot
+
+service pppd_gprs /system/bin/pppd_dt /dev/ttyACM0 debug noauth refuse-eap usepeerdns nodetach
+    user root
+    group radio cache inet misc
+    disabled
+    oneshot
+
+#Add by T.Zh for ppp daemon
+service pppd /system/bin/pppd file /data/misc/ppp/ppp_options
+    user root
+    disabled 
+    oneshot
+
+#
+#
+#  Modem related services (End)
+#
+

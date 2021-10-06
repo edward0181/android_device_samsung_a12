@@ -1,0 +1,3 @@
+libDualCamBokehCapture.camera.samsung.so
+libOpenCL.so
+libswldc_capture_core.camera.samsung.so
