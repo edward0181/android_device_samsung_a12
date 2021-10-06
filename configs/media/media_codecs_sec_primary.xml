@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (C) 2012 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<MediaCodecs>
+    <Decoders>
+        <MediaCodec name="OMX.SEC.amr.dec" rank="2">
+            <Type name="audio/amr-wb">
+                <Limit name="channel-count" max="1" />
+                <Limit name="sample-rate" ranges="16000" />
+                <Limit name="bitrate" range="6600-23850" />
+            </Type>
+            <Type name="audio/3gpp">
+                <Limit name="channel-count" max="1" />
+                <Limit name="sample-rate" ranges="8000" />
+                <Limit name="bitrate" range="4750-12200" />
+            </Type>
+        </MediaCodec>
+        <MediaCodec name="OMX.SEC.mp3.dec" rank="2">
+            <Type name="audio/mpeg">
+                <Limit name="channel-count" max="2" />
+                <Limit name="sample-rate" ranges="8000-48000" />
+                <Limit name="bitrate" range="8000-320000" />
+            </Type>
+            <Type name="audio/mpeg-L1">
+                <Limit name="channel-count" max="2" />
+                <Limit name="sample-rate" ranges="8000-48000" />
+                <Limit name="bitrate" range="8000-448000" />
+            </Type>
+            <Type name="audio/mpeg-L2">
+                <Limit name="channel-count" max="2" />
+                <Limit name="sample-rate" ranges="8000-48000" />
+                <Limit name="bitrate" range="8000-384000" />
+            </Type>
+        </MediaCodec>
+        <MediaCodec name="OMX.SEC.flac.dec" type="audio/flac" rank="2">
+            <Limit name="channel-count" max="8" />
+            <Limit name="sample-rate" ranges="1-655350" />
+            <Limit name="bitrate" range="1-21000000" />
+        </MediaCodec>
+        <MediaCodec name="OMX.SEC.adpcm.dec" type="audio/x-ima"  rank="2">
+            <Limit name="channel-count" max="2" />
+            <Limit name="sample-rate" ranges="8000-48000" />
+            <Limit name="bitrate" range="5000-384000" />
+        </MediaCodec>
+    </Decoders>
+    <Encoders>
+        <MediaCodec name="OMX.SEC.naac.enc" type="audio/mp4a-latm" rank="16">
+            <Limit name="channel-count" max="6" />
+            <Limit name="sample-rate" ranges="8000-96000" />
+            <Limit name="bitrate" range="8000-960000" />
+        </MediaCodec>
+    </Encoders>
+</MediaCodecs>

@@ -1,0 +1,2 @@
+-app/ImsSettings/ImsSettings.apk
+lib64/libaptX_encoder.so

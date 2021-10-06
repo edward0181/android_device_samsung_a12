@@ -1,33 +1,8 @@
-#
-# Copyright (C) 2020 The Android Open Source Project
-# Copyright (C) 2020 The TWRP Open Source Project
-# Copyright (C) 2020 SebaUbuntu's TWRP device tree generator
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-
 DEVICE_PATH := device/samsung/a12
-
-# For building with minimal manifest
-ALLOW_MISSING_DEPENDENCIES := true
-
-# Bootloader
 BOARD_VENDOR := samsung
-TARGET_SOC := k65v1_64_bsp_titan_rat
-TARGET_BOOTLOADER_BOARD_NAME := mt6765
-TARGET_NO_BOOTLOADER := true
-TARGET_NO_RADIOIMAGE := true
-TARGET_USES_UEFI := true
+
+# Asserts
+TARGET_OTA_ASSERT_DEVICE := a12
 
 # Architecture
 TARGET_ARCH := arm64
@@ -49,51 +24,12 @@ TARGET_CPU_SMP := true
 ENABLE_CPUSETS := true
 ENABLE_SCHEDBOOST := true
 
-# Assert
-TARGET_OTA_ASSERT_DEVICE := a12nseea
-
-# File systems
-BOARD_HAS_LARGE_FILESYSTEM := true
-TARGET_USERIMAGES_USE_EXT4 := true
-TARGET_USERIMAGES_USE_F2FS := true
-
-# Platform
-TARGET_BOARD_PLATFORM := mt6765
 
 # Kernel
-TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/Image.gz
-TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
-BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
-#BOARD_INCLUDE_DTB_IN_BOOTIMG := true
-BOARD_INCLUDE_RECOVERY_DTBO := true
+TARGET_KERNEL_CONFIG := a12_defconfig
 TARGET_KERNEL_ARCH := arm64
 
-
-# Boot
-BOARD_BOOT_HEADER_VERSION := 2
-BOARD_KERNEL_BASE := 0x40078000
-BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 androidboot.selinux=permissive androidboot.boot_devices=bootdevice,11230000.mmc
-BOARD_NAME := SRPTH05D001
-BOARD_KERNEL_IMAGE_NAME := Image
-BOARD_KERNEL_PAGESIZE := 2048
-BOARD_KERNEL_OFFSET := 0x00008000
-BOARD_RAMDISK_OFFSET := 0x11a88000
-BOARD_KERNEL_SECOND_OFFSET := 0xbff88000
-BOARD_KERNEL_TAGS_OFFSET := 0x07808000
-BOARD_DTB_OFFSET := 0x07808000
-BOARD_MKBOOTIMG_ARGS += --base $(BOARD_KERNEL_BASE)
-BOARD_MKBOOTIMG_ARGS := --kernel_offset $(BOARD_KERNEL_OFFSET) --ramdisk_offset $(BOARD_RAMDISK_OFFSET) 
-BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET) --second_offset $(BOARD_KERNEL_SECOND_OFFSET)
-BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION) --pagesize $(BOARD_KERNEL_PAGESIZE) --board "SRPTH05D001"
-BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB) --dtb_offset $(BOARD_DTB_OFFSET)
-BOARD_CUSTOM_BOOTIMG_MK := device/samsung/a12/bootimg.mk
-
-# Recovery
-BOARD_HAS_LARGE_FILESYSTEM := true
-BOARD_HAS_NO_SELECT_BUTTON := true
-
 # Partitions
-BOARD_FLASH_BLOCK_SIZE := 131072
 BOARD_BOOTIMAGE_PARTITION_SIZE := 33554432
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 41943040
 
@@ -103,15 +39,11 @@ BOARD_SUPER_PARTITION_GROUPS := samsung_dynamic_partitions
 BOARD_SAMSUNG_DYNAMIC_PARTITIONS_SIZE := 5674893312
 BOARD_SAMSUNG_DYNAMIC_PARTITIONS_PARTITION_LIST := system vendor product odm
 
-# System as root
-BOARD_ROOT_EXTRA_FOLDERS := cache carrier data_mirror efs keyrefuge linkerconfig metadata omr optics prism spu
-BOARD_SUPPRESS_SECURE_ERASE := true
+# File systems
+BOARD_HAS_LARGE_FILESYSTEM := true
+TARGET_USERIMAGES_USE_EXT4 := true
+TARGET_USERIMAGES_USE_F2FS := true
 
-# Workaround for error copying vendor files to recovery ramdisk
-BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
-TARGET_COPY_OUT_VENDOR := vendor
-
-AB_OTA_UPDATER := false
 
 # Android Verified Boot
 BOARD_AVB_ENABLE := true
@@ -122,35 +54,15 @@ BOARD_AVB_RECOVERY_ROLLBACK_INDEX := 1
 BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
 BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flag 2
 
-# Crypto
-PLATFORM_SECURITY_PATCH := 2099-12-31
-VENDOR_SECURITY_PATCH := 2099-12-31
-PLATFORM_VERSION := 16.1.0
-TW_INCLUDE_CRYPTO := false
-TW_INCLUDE_CRYPTO_FBE := false
-TW_INCLUDE_FBE_METADATA_DECRYPT := false
-BOARD_USES_METADATA_PARTITION := true
+# HIDL
+DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/manifest.xml
+DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/engmode_manifest.xml
+DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/hyper-default-sec.xml
+DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/lights-default-sec.xml
+DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/manifest.xml
+DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/power-default.xml
+DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/vaultkeeper_manifest.xml
+DEVICE_MATRIX_FILE := $(DEVICE_PATH)/compatibility_matrix.xml
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := $(DEVICE_PATH)/framework_compatibility_matrix.xml
 
-# TWRP Configuration
-TW_DEVICE_VERSION := Edward0181-DEV-RC2
-TW_THEME := portrait_hdpi
-RECOVERY_SDCARD_ON_DATA := true
-TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
-TW_BRIGHTNESS_PATH := "/sys/devices/platform/panel/panel_drv/backlight/panel/brightness"
-TW_MAX_BRIGHTNESS := 306
-TW_DEFAULT_BRIGHTNESS := 200
-TW_HAS_DOWNLOAD_MODE := true
-TW_NO_REBOOT_BOOTLOADER := true
-TW_INCLUDE_NTFS_3G := true
-TW_USE_NEW_MINADBD := true
-TW_INPUT_BLACKLIST := "hbtp_vm"
-TW_EXCLUDE_DEFAULT_USB_INIT := true
-TW_USE_TOOLBOX := true
-TARGET_USES_MKE2FS := true
-TW_NO_LEGACY_PROPS := true
-TW_NO_BIND_SYSTEM := true
-TW_NO_SCREEN_BLANK := true
-TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
-TW_MTP_DEVICE := SM-A125F
-
-
+-include vendor/samsung/a12/BoardConfigVendor.mk
