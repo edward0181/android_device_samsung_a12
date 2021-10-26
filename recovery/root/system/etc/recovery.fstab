@@ -6,7 +6,7 @@ odm                 /odm         ext4        ro,barrier=1                wait,lo
 
 /dev/block/platform/bootdevice/by-name/md_udc	/metadata	ext4	noatime,nosuid,nodev,noauto_da_alloc,discard,journal_checksum,data=ordered,errors=panic,sync	wait,check,formattable,first_stage_mount
 
-/dev/block/platform/bootdevice/by-name/userdata	/data	f2fs	noatime,nosuid,nodev,discard,usrquota,grpquota,fsync_mode=nobarrier,reserve_root=32768,resgid=5678,inlinecrypt	latemount,wait,check,quota,reservedsize=128M,,,checkpoint=fs,fileencryption=aes-256-xts:aes-256-cts:v1
+/dev/block/platform/bootdevice/by-name/userdata	/data	f2fs	noatime,nosuid,nodev,discard,usrquota,grpquota,fsync_mode=nobarrier,reserve_root=32768,resgid=5678,inlinecrypt	latemount,wait,check,quota,reservedsize=128M,,,checkpoint=fs,encryptable=aes-256-xts:aes-256-cts:v1
 
 /dev/block/platform/bootdevice/by-name/cache	/cache	ext4	noatime,nosuid,nodev,noauto_da_alloc,discard,journal_checksum,data=ordered,errors=panic	wait,check,formattable
 
@@ -18,7 +18,7 @@ odm                 /odm         ext4        ro,barrier=1                wait,lo
 /dev/block/platform/bootdevice/by-name/prism /prism ext4 ro,barrier=1 nofail,avb,first_stage_mount
 /dev/block/platform/bootdevice/by-name/optics /optics ext4 ro,barrier=1 nofail,avb,first_stage_mount
 
-/dev/block/platform/bootdevice/by-name/efs	/efs	ext4	noatime,nosuid,nodev,noauto_da_alloc,discard,journal_checksum,data=ordered,errors=panic	wait,check,formattable
+/dev/block/platform/bootdevice/by-name/sec_efs	/efs	ext4	noatime,nosuid,nodev,noauto_da_alloc,discard,journal_checksum,data=ordered,errors=panic	wait,check,formattable
 
 
 /dev/block/platform/bootdevice/by-name/keydata	/keydata	ext4	noatime,nosuid,nodev,noauto_da_alloc,discard,journal_checksum,data=ordered,errors=panic,inlinecrypt	wait,check,formattable,fileencryption=aes-256-xts,nofail
@@ -67,5 +67,9 @@ odm                 /odm         ext4        ro,barrier=1                wait,lo
 
 
 /dev/block/platform/bootdevice/by-name/vbmeta /vbmeta emmc defaults defaults
+/dev/block/platform/bootdevice/by-name/vbmeta_samsung	/vbmeta_samsung	emmc	defaults		defaults
+/dev/block/platform/bootdevice/by-name/vbmeta_system	/vbmeta_system	emmc	defaults		defaults
+
+
 
 /dev/block/platform/bootdevice/by-name/uh /uh emmc defaults defaults

@@ -1,8 +1,8 @@
 # mount point	fstype		device			device2				flags
 # Logical partitions
-system		/system		ext4							wait,logical,first_stage_mount
-vendor		/vendor		ext4							wait,logical,first_stage_mount
-product		/product	ext4							wait,logical,first_stage_mount
+system		/system	ext4							wait,logical,first_stage_mount
+vendor		/vendor	ext4							wait,logical,first_stage_mount
+product	/product	ext4							wait,logical,first_stage_mount
 odm		/odm		ext4							wait,logical,first_stage_mount
 
 
@@ -12,7 +12,9 @@ odm		/odm		ext4							wait,logical,first_stage_mount
 /dtbo               emmc    /dev/block/platform/bootdevice/by-name/dtbo         flags=display="DTBO Image";backup=1;flashimg=1
 /optics_image       emmc    /dev/block/platform/bootdevice/by-name/optics       flags=display="Optics Image";backup=1;flashimg=1
 /prism_image        emmc    /dev/block/platform/bootdevice/by-name/prism        flags=display="Prism Image";backup=1;flashimg=1
-/vbmeta             emmc    /dev/block/bootdevice/by-name/vbmeta                flags=backup=1;display="Vbmeta Image";flashimg=1
+/vbmeta             emmc    /dev/block/platform/bootdevice/by-name/vbmeta                flags=backup=1;display="Vbmeta Image";flashimg=1
+/vbmeta_system      emmc    /dev/block/platform/bootdevice/by-name/vbmeta_system         flags=backup=1;display="Vbmeta_system Image";flashimg=1
+/vbmeta_samsung     emmc    /dev/block/platform/bootdevice/by-name/vbmeta_samsung        flags=backup=1;display="Vbmeta_Samsung Image";flashimg=1
 
 # Cache and ETC Points
 /cache              ext4    /dev/block/platform/bootdevice/by-name/cache         flags=display="Cache";backup=1;wipeingui
@@ -34,7 +36,6 @@ odm		/odm		ext4							wait,logical,first_stage_mount
 /optics             ext4    /dev/block/platform/bootdevice/by-name/optics        flags=display="Optics";backup=1
 
 # Metadata Point
-/data		f2fs		/dev/block/platform/bootdevice/by-name/userdata		flags=length=-16384
 /metadata           ext4    /dev/block/platform/bootdevice/by-name/md_udc      flags=display="Metadata";backup=1;wipeingui
 
 # Removable storage
