@@ -1,38 +1,12 @@
-language: java
-dist: trusty
-jdk:
-  - openjdk8
-- os: linux
-cache: ccache
-compiler:
-  - clang
-  - gcc
-addons:
-  apt:
-    update: true
-    sources:
-      - llvm-toolchain-trusty-5.0
-    packages:
-      - oracle-java8-installer
-      - clang-5.0
-env:
-  - MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0"
-  global:
-    - MAKEFLAGS="-j 2"
-sudo: false
-script:
-  - jdk_switcher use openjdk8
-  - while sleep 9m; do echo "=====[ $SECONDS seconds build still running ]====="; done &
-  - bash build-twrp.sh
-before_deploy:
-  - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d-%H%M')}
-  - export RELEASE_NAME=TWRP-A12-3
-  - git tag $TRAVIS_TAG
-deploy:
-  provider: releases
-    file_glob: true
-  file: /home/travis/twrp/out/target/product/a12/recovery.img
-  skip_cleanup: true
-  on:
-    repo: Edward0181/android_device_samsung_a12
-    branch: twrp-11.0
+language: android
+dist: xenial
+before install: 
+- sudo apt-get update
+- sudo apt-get -y install openjdk-8-jdk android-tools-adb bc bison build-essential curl flex g++-multilib gcc-multilib gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev libesd0-dev liblz4-tool libncurses5-dev libsdl1.2-dev libssl-dev libwxgtk3.0-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc yasm zip zlib1g-dev
+- ./build-twrp.sh
+android:
+  components:
+  - platform-tools
+  - build-tools-29.0.0
+  - extra
+  
