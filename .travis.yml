@@ -1,7 +1,3 @@
-install:
-  - sudo apt-get install -y g++ zlib1g-dev build-essential git python time gawk gettext unzip file libssl-dev wget gcc flex bison libz-dev libncurses-dev make
-  - sudo apt install -y ccache automake lzop gperf build-essential zip curl zlib1g-dev zlib1g-dev g++-multilib python-networkx libxml2-utils bzip2 libbz2-dev libbz2-1.0 libghc-bzlib-dev squashfs-tools pngcrush schedtool dpkg-dev liblz4-tool make optipng
-  
 language: java
 dist: trusty
 jdk:
@@ -30,16 +26,13 @@ script:
   - bash build-twrp.sh
 before_deploy:
   - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d-%H%M')}
-  - export RELEASE_NAME=TWRP-Realme-3
+  - export RELEASE_NAME=TWRP-A12-3
   - git tag $TRAVIS_TAG
 deploy:
   provider: releases
-  api_key:
-    secure: Y27fkgkVnS1+fQmjaqMpVeW1caFz/dZ25dpPivV10CWbpmLAY0VId2sdU5pCpdkEKcs+mgbOp0EXBmtTyn5Hcnik3tHcj77+pQBdS5+8Og/LM19TUlgGwLSCJpSpracKF1SaJA5x/gtR2YxlQtox7AWwhUJc/3BMfrpHy88PBgHt3Wzv1WiRoPr5H3pts59OTjADFRNzU96dVD2XAvGmMSsNO3cTNZwfrQpOnx30ho7dEWEhs6DpgPUjkTDCNvjlqIzhkuY0JAxnp1IC8VZ/kKxM+RByTI3FBvnSvntNdPYYOyV1Y3dVlXKTM25EtQh11lKyRBpAuWfnYrlTh4/1haB4PluE8ShAH0zu2/Z6UGdXWY66usdy7gVHGsh2haI+w8GhixSJu6OnK/21cAfvqR9JoJPGtdkjjzjzAMwNcFfYPu5GWV20QVBhdN12XnsCsDuFu3sgJGFiHgo3z49cUeF1rNbKhR26+y/1iB/c2XUJCwnIVYbX2UbQRLPixoCFrdS2IxHHFarX+LbYVHCpGCBUqJ1PrLmf7m9TLqDA+JRZZuyXz0LAliK2qRwfS2dO8aHyfkkyZ26YAe1SxBtMXY/cGImB4iJoEkFM1B/QDLGav+7N8blHFgSkBpan2DSocfgZUd6k/Cc9vSbVtanMRgAr0I4bOpPublG/DJetLl0=
-  name: ${RELEASE_NAME}
-  file_glob: true
-  file: /home/travis/twrp/out/target/product/spartan/recovery.img
+    file_glob: true
+  file: /home/travis/twrp/out/target/product/a12/recovery.img
   skip_cleanup: true
   on:
-    repo: N00bTree/solid-umbrella
-    branch: realme-spartan
+    repo: Edward0181/android_device_samsung_a12
+    branch: twrp-11.0
