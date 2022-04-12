@@ -24,9 +24,6 @@ fi
 
 PATH=~/bin:$PATH
 source ~/.bashrc
-sudo add-apt-repository ppa:deadsnakes/ppa
-sudo apt update
-sudo apt install python3.9
 sudo wget 'https://storage.googleapis.com/git-repo-downloads/repo' -P /usr/local/sbin/
 sudo chmod +x /usr/local/sbin/repo
 
