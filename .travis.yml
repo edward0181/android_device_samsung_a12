@@ -5,20 +5,20 @@ before_install:
  - docker pull surendrajat/twrp-builder:latest
 before_script:
 - sudo apt-get install bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5-dev libsdl1.2-dev libssl-dev libwxgtk3.0-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev python
-- curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > ~/bin/repo && chmod a+x $HOME/bin/repo
-- cd $HOME && mkdir twrp
- - cd $HOME/twrp/
- - git config --global user.email "edward0181@gmail.com"
- - git config --global user.name "edward0181"
- - ./$HOME/bin/repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11
- - repo sync --no-repo-verify -c --force-sync --no-clone-bundle --no-tags --optimized-fetch --prune -jnproc
+- curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > ~/bin/repo && chmod a+x ~/bin/repo
+- mkdir ~/twrp
+- cd ~/twrp/
+- git config --global user.email "edward0181@gmail.com"
+- git config --global user.name "edward0181"
+- ./$HOME/bin/repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11
+- repo sync --no-repo-verify -c --force-sync --no-clone-bundle --no-tags --optimized-fetch --prune -jnproc
 script:
- - cd $HOME/twrp/ && git clone https://github.com/edward0181/android_device_samsung_a12 -b twrp-11.0 device/samsung/a12
+ - cd ~/twrp/ && git clone https://github.com/edward0181/android_device_samsung_a12 -b twrp-11.0 device/samsung/a12
  - git clone https://github.com/00p513-dev/android_kernel_samsung_a12.git kernel/samsung/a12
  
  - |
    docker run --rm -i -v "$(pwd):/root/twrp/:rw,z" surendrajat/twrp-builder bash << EOF
-   cd /root/twrp
+   cd ~/twrp
    source build/envsetup.sh && lunch twrp_a12-eng && make -j16 recoveryimage
    exit
    EOF
