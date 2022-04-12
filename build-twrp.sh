@@ -24,8 +24,11 @@ fi
 
 PATH=~/bin:$PATH
 source ~/.bashrc
-curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
-chmod a+x ~/bin/repo
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt update
+sudo apt install python3.9
+sudo wget 'https://storage.googleapis.com/git-repo-downloads/repo' -P /usr/local/sbin/
+sudo chmod +x /usr/local/sbin/repo
 
 if [ ! -d $WORKSPACE ]; then
     echo "[I] Setting up TWRP source !"
@@ -33,8 +36,8 @@ if [ ! -d $WORKSPACE ]; then
 fi
 
 cd $WORKSPACE
-python3 ~/bin/repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11
-python3 ~/bin/repo sync
+python3.9 ~/bin/repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11
+python3.9 ~/bin/repo sync
 if [ ! -d $DT_DIR ]; then
     echo "[I] Setting up device tree !"
     mkdir -p $DT_DIR
