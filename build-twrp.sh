@@ -33,6 +33,15 @@ if [ ! -d $WORKSPACE ]; then
 fi
 
 cd $WORKSPACE
+sudo apt-get install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5-dev libsdl1.2-dev libssl-dev libwxgtk3.0-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev python
+sudo add-apt-repository 'deb http://cz.archive.ubuntu.com/ubuntu trusty main'
+sudo add-apt-repository 'deb http://cz.archive.ubuntu.com/ubuntu/ trusty main universe'
+sudo add-apt-repository 'deb http://cz.archive.ubuntu.com/ubuntu/ trusty-updates main universe'
+sudo add-apt-repository 'deb http://security.ubuntu.com/ubuntu trusty main restricted universe multiverse'
+sudo add-apt-repository 'deb http://security.ubuntu.com/ubuntu trusty-security main restricted universe multiverse'
+sudo apt-get update
+sudo apt-get upgrade -y
+
 repo init --depth=1 -u $TWRP_SOURCE -b $TWRP_BRANCH
 repo sync >log 2>&1
 wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/android-9.0.0_r1/clang-4691093.tar.gz
