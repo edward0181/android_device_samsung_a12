@@ -18,9 +18,12 @@ before_script:
 - git config --global user.name "edward0181"
 - sudo apt update
 - sudo apt upgrade -y
+- python3 repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11
+- python3 repo sync
 script:
  - cd ~/twrp/ && git clone https://github.com/edward0181/android_device_samsung_a12 -b twrp-11.0 device/samsung/a12
  - git clone https://github.com/00p513-dev/android_kernel_samsung_a12.git kernel/samsung/a12
+ 
  - |
    docker run --rm -i -v "$(pwd):/root/twrp/:rw,z" surendrajat/twrp-builder bash << EOF
    curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > ~/bin/repo && chmod a+x ~/bin/repo
