@@ -44,10 +44,6 @@ sudo apt-get upgrade -y
 
 repo init --depth=1 -u $TWRP_SOURCE -b $TWRP_BRANCH
 repo sync >log 2>&1
-wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/android-9.0.0_r1/clang-4691093.tar.gz
-tar xvf clang-4691093.tar.gz
-mkdir -p prebuilts/clang/host/linux-x86/
-mv -rf clang-4691093 prebuilts/clang/host/linux-x86/
 
 if [ ! -d $DT_DIR ]; then
     echo "[I] Setting up device tree !"
