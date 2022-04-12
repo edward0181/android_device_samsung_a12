@@ -1,0 +1,56 @@
+os: linux
+dist: focal
+language: generic
+sudo: required
+git:
+  depth: 1
+addons:
+  apt:
+    update:
+      - true
+services:
+  - docker
+
+before_install:
+  - docker pull fr3akyphantom/droid-builder:focal
+
+before_script:
+  - cd $HOME && mkdir twrp
+
+script:
+- cd $HOME/twrp/ && git clone repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11
+- git clone https://github.com/edward0181/android_device_samsung_a12 -b twrp-11.0 device/samsung/a12
+- git clone https://github.com/00p513-dev/android_kernel_samsung_a12.git kernel/samsung/a12
+- repo sync --no-repo-verify -c --force-sync --no-clone-bundle --no-tags --optimized-fetch --prune -jnproc
+    docker run --rm -i -e USER_ID=$(id -u) -e GROUP_ID=$(id -g) -v "$(pwd):/home/builder/twrp/:rw,z" -v "${HOME}/.ccache:/srv/ccache:rw,z" fr3akyphantom/droid-builder bash << EOF
+    cd /home/builder/twrp/
+    source build/envsetup.sh
+    # Choose build flavor as "eng" or "userdebug"
+    BUILD_FLAVOR="eng"
+    lunch twrp_$$DEVICE$$-${BUILD_FLAVOR}
+    make -j$(nproc --all) recoveryimage
+    exit
+    EOF
+after_success:
+  - export version=$(cat bootable/recovery/variables.h | grep "define TW_MAIN_VERSION_STR" | cut -d '"' -f2)
+  - cp $HOME/twrp/out/target/product/$$DEVICE$$/recovery.img $HOME/twrp/TWRP-$version-$$DEVICE$$-$(date +"%Y%m%d")-Unofficial.img
+  - cd $HOME/twrp/
+  # Optional: You might need to switch from https://transfer.sh to https://file.io
+  - curl -s --upload-file TWRP-$version-$$DEVICE$$-$(date +"%Y%m%d")-Unofficial.img https://file.io/ && echo ""
+deploy:
+  skip_cleanup: true
+  provider: releases
+  # The secret api_key will be loaded from the environment variables
+  api_key: $GitOAUTHToken
+  file_glob: true
+  file: $HOME/twrp/*.img
+  on:
+    tags: false
+    repo: $$USERNAME$$/$$REPO_URL$$ # Optional: If you want to deploy on different repository
+    branch: master # Optional: Needs to be exact as the config branch
+branches:
+  only:
+    - master # Set travis builder branch(es) names
+  except:
+    - /^(?i:untagged)-.*$/
+    - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
