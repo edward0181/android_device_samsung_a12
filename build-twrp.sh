@@ -33,8 +33,8 @@ if [ ! -d $WORKSPACE ]; then
 fi
 
 cd $WORKSPACE
-repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11
-repo sync
+python3 ~/bin/repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11
+python3 ~/bin/repo sync
 if [ ! -d $DT_DIR ]; then
     echo "[I] Setting up device tree !"
     mkdir -p $DT_DIR
