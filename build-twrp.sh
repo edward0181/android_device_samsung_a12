@@ -1,13 +1,13 @@
-#!/bin/bash
+#!/bin/sh
 WORKSPACE=~/twrp
-TWRP_SOURCE=git://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni.git
-TWRP_BRANCH=twrp-9.0
-DEVICE_CODE=spartan
-DEVICE_MANUFACTURER=realme
-DEVICE_SOURCE=https://github.com/N00bTree/android_device_realme_spartan.git
+TWRP_SOURCE=https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git
+TWRP_BRANCH=twrp-11
+DEVICE_CODE=A12
+DEVICE_MANUFACTURER=Samsung
+DEVICE_SOURCE=https://github.com/edward0181/android_device_samsung_a12.git
 DT_DIR=device/$DEVICE_MANUFACTURER/$DEVICE_CODE
-GIT_USER_NANE=chankruze
-GIT_USER_EMAIL=chakruze@gmail.com
+GIT_USER_NANE=Edward0181
+GIT_USER_EMAIL=edwardroggeveen@gmail.com
 GIT_COLOR_UI=false
 ###################################################################################
 git config --global user.name $GIT_USER_NANE
@@ -33,13 +33,7 @@ if [ ! -d $WORKSPACE ]; then
 fi
 
 cd $WORKSPACE
-repo init --depth=1 -u $TWRP_SOURCE -b $TWRP_BRANCH
-repo sync >log 2>&1
-wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/android-9.0.0_r1/clang-4691093.tar.gz
-tar xvf clang-4691093.tar.gz
-mkdir -p prebuilts/clang/host/linux-x86/
-mv -rf clang-4691093 prebuilts/clang/host/linux-x86/
-
+repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11
 if [ ! -d $DT_DIR ]; then
     echo "[I] Setting up device tree !"
     mkdir -p $DT_DIR
@@ -48,7 +42,7 @@ fi
 echo "[I] Preparing for build !"
 export ALLOW_MISSING_DEPENDENCIES=true
 source build/envsetup.sh
-lunch omni_$DEVICE_CODE-eng
+lunch twrp_a12-eng
 echo "[I] Build started !"
 mka recoveryimage
-curl --upload-file ./out/target/product/spartan/recovery.img https://transfer.sh/twrp-spartan-001.img
+curl --upload-file ./out/target/product/a12/recovery.img https://transfer.sh/twrp-a12-001.img
