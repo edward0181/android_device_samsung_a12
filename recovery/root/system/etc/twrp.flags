@@ -1,0 +1,44 @@
+# mount point	fstype		device			device2				flags
+# Logical partitions
+system	/system		ext4								flags=display="System";first_stage_mount;logical;
+vendor	/vendor		ext4								flags=display="Vendor";first_stage_mount;logical;
+product	/product	ext4								flags=display="Product";first_stage_mount;logical;
+odm		/odm		ext4								flags=display="ODM";first_stage_mount;logical;
+
+# Symlinked partitions
+/system_image	emmc		system						flags=backup=1;flashimg=1;wipeingui;display="System Image";
+/vendor_image	emmc		vendor						flags=backup=1;flashimg=1;wipeingui;display="Vendor Image";
+/product_image	emmc		product						flags=backup=1;flashimg=1;wipeingui;display="Product Image";
+/odm_image		emmc		odm							flags=backup=1;flashimg=1;wipeingui;display="ODM Image";
+
+# Physical partitions
+/metadata	ext4		/dev/block/platform/bootdevice/by-name/md_udc		flags=backup=1;display="Metadata";
+/boot		emmc		/dev/block/platform/bootdevice/by-name/boot			flags=backup=1;flashimg=1;display="Boot";
+/recovery	emmc		/dev/block/platform/bootdevice/by-name/recovery		flags=backup=1;flashimg=1;display="Recovery";
+/data		f2fs		/dev/block/platform/bootdevice/by-name/userdata		flags=wipeingui;length=-16384;
+/cache		ext4		/dev/block/platform/bootdevice/by-name/cache		flags=backup=1;display="Cache";
+/dtbo		emmc		/dev/block/platform/bootdevice/by-name/dtbo			flags=backup=1;flashimg=1;display="DTBO";
+/param		emmc		/dev/block/platform/bootdevice/by-name/param		flags=backup=1;display="Param";
+/optics_image	emmc		/dev/block/platform/bootdevice/by-name/optics	flags=backup=1;flashimg=1;display="Optics Image";
+/prism_image	emmc		/dev/block/platform/bootdevice/by-name/prism	flags=backup=1;flashimg=1;display="Prism Image";
+/gz1		emmc		/dev/block/platform/bootdevice/by-name/gz1
+/misc		emmc		/dev/block/platform/bootdevice/by-name/misc			flags=backup=1;flashimg=1;display="Misc";
+/efs		ext4		/dev/block/platform/bootdevice/by-name/sec_efs		flags=backup=1;display="EFS";
+/modem		emmc		/dev/block/platform/bootdevice/by-name/apnhlos		flags=backup=1;display="Modem";
+/mdm		emmc		/dev/block/platform/bootdevice/by-name/modem		flags=backup=1;subpartitionof=/modem;
+/dsp		emmc		/dev/block/platform/bootdevice/by-name/dsp
+/dtbo		emmc		/dev/block/platform/bootdevice/by-name/dtbo
+/md1img		emmc		/dev/block/platform/bootdevice/by-name/md1img
+/spmfw		emmc		/dev/block/platform/bootdevice/by-name/spmfw
+/scp1		emmc		/dev/block/platform/bootdevice/by-name/scp1
+/sspm_1		emmc		/dev/block/platform/bootdevice/by-name/sspm_1	
+
+# Removable storage
+/external_sd	auto		/dev/block/mmcblk1p1	/dev/block/mmcblk1		flags=storage;wipeingui;removable;display="External SDcard"
+/usb-otg	auto		/dev/block/sdf1		/dev/block/sdf			flags=display="USB-OTG";storage;wipeingui;removable
+
+# Temporarily generated to workaround Magisk bug on MTK A-only
+/nvram		emmc	/dev/block/platform/bootdevice/by-name/nvram			flags=display="NVRAM";backup=1;
+/nvcfg		emmc	/dev/block/platform/bootdevice/by-name/nvcfg			flags=display="NVCFG";backup=1;subpartitionof=/nvram;
+/nvdata		emmc	/dev/block/platform/bootdevice/by-name/nvdata			flags=display="NVDATA";backup=1;subpartitionof=/nvram;
+/persistent	emmc	/dev/block/platform/bootdevice/by-name/persistent		flags=display="PERSISTENT";backup=1;subpartitionof=/nvram;

@@ -1,0 +1,205 @@
+#!/system/bin/sh
+#
+# A simple Samsung services disabler by Ian Macdonald.
+#
+# Use this to prime your device after installing TWRP.
+
+md5() {
+  md5sum -b "$1"
+}
+
+file_changed() {
+  local file="$1"
+  local old_md5="$2"
+  local new_md5=$( md5 "$file" )
+
+  if [ $new_md5 != $old_md5 ]; then
+    echo " -     ...modified."
+  else
+    echo " -     ...unchanged."
+  fi
+}
+
+resize_vendor() {
+  local dm_block=$(df -k | cat | grep "/vendor" | cut -d' ' -f1)
+
+  echo " - Unmounting /vendor..."
+  umount /vendor
+  echo " - Checking vendor block parition before resizing..."
+  e2fsck -f $dm_block
+  echo " - Resizing the filesystem on $dm_block..."
+  resize2fs $dm_block
+  echo " - Make the partition R/W by unsharing its blocks..."
+  e2fsck -E unshare_blocks $dm_block
+  echo " - Remounting /vendor..."
+  mount /vendor
+  mount -o remount,rw /vendor
+}
+
+vendor_free_size_check() {
+  echo " - Checking vendor free size..."
+  if dd if=/dev/zero of=/vendor/test bs=1 count=1 2>/dev/null; then
+    echo " -     ...succeeded."
+    rm -f /vendor/test
+  else
+    echo " -     ...No free space left on vendor, attempt to resizing vendor..."
+    echo " "
+    rm -f /vendor/test
+    resize_vendor
+  fi
+}
+
+disable_fbe() {
+  local md5
+  local i
+  fstab_files=`grep -lr 'fileencryption' vendor/etc`
+
+  #
+  # Exynos devices = fstab.exynos*.
+  # MediaTek devices = fstab.mt*.
+  # Snapdragon devices = fstab.qcom, fstab.emmc, fstab.default
+  #
+  for i in $fstab_files; do
+    if [ -f $i ]; then
+      echo " - Disabling file-based encryption (FBE) for /data..."
+      echo " -   Found $i."
+      md5=$( md5 $i )
+      # This comments out the offending line and adds an edited one.
+      sed -i -e 's/^\([^#].*\)fileencryption=[^,]*\(.*\)$/# &\n\1encryptable\2/g' $i
+      file_changed $i $md5
+    fi
+  done
+}
+
+disable_fde() {
+  local md5
+  local i
+  fstab_files=`grep -lr 'forceencrypt' vendor/etc`
+
+  #
+  # Exynos devices = fstab.exynos*.
+  # MediaTek devices = fstab.mt*.
+  # Snapdragon devices = fstab.qcom, fstab.emmc, fstab.default
+  #
+  for i in $fstab_files; do
+    if [ -f $i ]; then
+      echo " - Disabling full-disk encryption (FDE) for /data..."
+      echo " -   Found $i."
+      md5=$( md5 $i )
+      # This comments out the offending line and adds an edited one.
+      sed -i -e 's/^\([^#].*\)forceencrypt=[^,]*\(.*\)$/# &\n\1encryptable\2/g' $i
+      file_changed $i $md5
+    fi
+  done
+}
+
+disable_recovery_restoration() {
+  local r=recovery-from-boot.p
+  local found
+  local i
+
+  echo " - Disabling restoration of stock recovery..."
+
+  for i in $ANDROID_ROOT $ANDROID_ROOT/system /vendor; do
+    if [ -f $i/$r~ ]; then
+	echo " -   ...already disabled."
+	found=true
+	break
+    fi
+
+    if [ -f $i/$r ]; then
+      echo " -   Found $i/$r. Disabling..."
+      mv $i/$r $i/$r~
+
+      if [ -f $i/$r~ ]; then
+	echo " -     ...succeeded."
+      else
+	echo " -     ...failed."
+      fi
+
+      found=true
+      break
+    fi
+
+  done
+
+  [ -z "$found" ] && echo " -   Found no stock recovery. Pfft."
+}
+
+echo " "
+echo "Multi-disabler v3.1 for Samsung devices"
+echo "running Android 9 or later."
+echo "by Ian Macdonald, enhanced by afaneh92"
+echo " "
+
+os=$(getprop ro.build.version.release)
+major=${os%%.*}
+bl=$(getprop ro.boot.bootloader)
+dp=$(getprop ro.boot.dynamic_partitions)
+
+# Firmware version starts at either 8th or 9th character, depending on length
+# of bootloader string (12 or 13).
+#
+fw=${bl:$((${#bl} - 4)):4}
+
+# Device is first 5 characters of bootloader string.
+#
+device=${bl:0:$((${#bl} - 8))}
+mft=$(getprop ro.product.manufacturer | tr '[A-Z]' '[a-z]')
+
+if [ "$mft" != samsung ]; then
+  echo " - Device appears not to be made by Samsung."
+  fatal=true
+elif [ -z "$device" ]; then
+  echo " - Could not determine device model."
+  fatal=true
+elif [ $major -lt 9 ]; then
+  echo " - This software is incompatible with Android $major."
+  fatal=true
+fi
+if [ -n "$fatal" ]; then
+  echo " - Installation aborted."
+  echo " "
+  exit 1
+fi
+
+echo " - Detected a $device device with a $fw bootloader."
+echo " - The environment appears to be Android $major."
+echo " "
+
+echo " - Mounting $ANDROID_ROOT..."
+mount $ANDROID_ROOT 2>/dev/null
+mount -o remount,rw $ANDROID_ROOT 2>/dev/null
+
+if ! mount | grep $ANDROID_ROOT >/dev/null; then
+  ANDROID_ROOT=/system_root
+  echo " -   Attempt failed. Mounting at $ANDROID_ROOT..."
+  mount -o rw $ANDROID_ROOT
+  if ! mount | grep $ANDROID_ROOT >/dev/null; then
+    echo " -   Even that attempt failed. Aborting..."
+    exit 2
+  fi
+fi
+
+echo " - Mounting /vendor..."
+mount /vendor
+mount -o remount,rw /vendor
+
+if ! mount | grep /vendor >/dev/null; then
+  echo " -   Mount failed. Aborting..."
+  exit 3
+fi
+
+vendor_free_size_check
+disable_fbe
+disable_fde
+disable_recovery_restoration
+
+echo " - Unmounting /vendor..."
+umount /vendor
+echo " - Unmounting $ANDROID_ROOT..."
+umount $ANDROID_ROOT
+
+echo " "
+echo " - Finished."
+echo " "
