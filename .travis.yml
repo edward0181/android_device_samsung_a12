@@ -3,23 +3,15 @@ jdk: oraclejdk8
 
 android:
   components:
-    - tools
     - platform-tools
     - build-tools-29.0.0
-    - android-29
-    - extra-google-m2repository
-    - extra-android-m2repository
-    # Google Play Services
-    - extra-google-google_play_services
-    # Support library
-    - extra-android-support
 
   script:
    - bash build-twrp.sh
    
 before_deploy:
   - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d-%H%M')}
-  - export RELEASE_NAME=TWRP-Realme-3
+  - export RELEASE_NAME=TWRP-a12-3
   - git tag $TRAVIS_TAG
 deploy:
   provider: releases
