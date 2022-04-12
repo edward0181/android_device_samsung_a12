@@ -4,13 +4,9 @@ services:
 before_install:
  - docker pull surendrajat/twrp-builder:latest
 before_script:
-- sudo apt-get -y install bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5-dev libsdl1.2-dev libssl-dev libwxgtk3.0-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev python
-- sudo apt-get -y install repo
-- export REPO=$(mktemp /tmp/repo.XXXXXXXXX)
-- curl -o ${REPO} https://storage.googleapis.com/git-repo-downloads/repo
-- gpg --recv-key 8BB9AD793E8E6153AF0F9A4416530D5E920F5C65
-- curl -s https://storage.googleapis.com/git-repo-downloads/repo.asc | gpg --verify - ${REPO} && install -m 755 ${REPO} ~/bin/repo
-- http://commondatastorage.googleapis.com/git-repo-downloads/repo
+- sudo apt update && sudo apt upgrade -y && sudo apt-get -y install bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5-dev libsdl1.2-dev libssl-dev libwxgtk3.0-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev python3
+- sudo apt install -y openjdk-8-jdk build-essential
+- curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > ~/bin/repo && chmod a+x ~/bin/repo
 - mkdir ~/twrp
 - cd ~/twrp/
 - git config --global user.email "edward0181@gmail.com"
