@@ -1,4 +1,5 @@
 #!/bin/bash
+mkdir ~/twrp
 WORKSPACE=~/twrp
 TWRP_SOURCE=https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git
 TWRP_BRANCH=twrp-11
