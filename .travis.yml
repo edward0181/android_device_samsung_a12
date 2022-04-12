@@ -1,8 +1,12 @@
 language: android
-dist: xenial
+dist: focal
 before install: 
-- sudo apt-get update
-- sudo apt-get -y install openjdk-8-jdk android-tools-adb python3 bc bison build-essential curl flex g++-multilib gcc-multilib gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev libesd0-dev liblz4-tool libncurses5-dev libsdl1.2-dev libssl-dev libwxgtk3.0-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc yasm zip zlib1g-dev
+- sudo apt update
+- sudo apt install -y sudo apt install openssh-server screen python git openjdk-8-jdk android-tools-adb bc bison build-essential curl flex g++-multilib gcc-multilib gnupg gperf imagemagick lib32ncurses-dev lib32readline-dev lib32z1-dev  liblz4-tool libncurses5-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc yasm zip zlib1g-dev libtinfo5 libncurses5
+- sudo wget 'https://storage.googleapis.com/git-repo-downloads/repo' -P /usr/local/sbin/
+- sudo chmod +x /usr/local/sbin/repo
+- git config – global user.email "edwardroggeveen@gmail.com"
+- git config – global user.name "edward0181"
 - chmod u+x build-twrp.sh
 - ./build-twrp.sh
 android:
