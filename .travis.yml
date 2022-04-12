@@ -5,15 +5,14 @@ before_install:
  - docker pull surendrajat/twrp-builder:latest
 before_script:
  - cd $HOME && mkdir twrp
- - wget -q https://github.com/TwrpBuilder/twrp-sources/releases/download/omni_twrp-5.1.1-cleaned/omni_twrp-5.1.1_cleaned.tar.xz -O $HOME/twrp.tar.xz
- - tar -xJf twrp.tar.xz --directory $HOME/twrp/ && rm twrp.tar.xz
+ - repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11
+- repo sync --no-repo-verify -c --force-sync --no-clone-bundle --no-tags --optimized-fetch --prune -jnproc
 script:
- - cd $HOME/twrp/ && git clone https://github.com/surendrajat/android_device_samsung_o7prolte.git device/samsung/o7prolte
- - git clone https://github.com/TwrpBuilder/device_generic_twrpbuilder.git device/generic/twrpbuilder
- - git clone https://github.com/omnirom/android_bootable_recovery.git bootable/recovery --depth=1
- - |
+ - cd $HOME/twrp/ && git git clone https://github.com/edward0181/android_device_samsung_a12 -b twrp-11.0 device/samsung/a12
+ - git clone git clone https://github.com/00p513-dev/android_kernel_samsung_a12.git kernel/samsung/a12
+ 
    docker run --rm -i -v "$(pwd):/root/twrp/:rw,z" surendrajat/twrp-builder bash << EOF
    cd /root/twrp
-   source build/envsetup.sh && lunch omni_o7prolte-eng && make -j16 recoveryimage
+   source build/envsetup.sh && lunch twrp_a12-eng && make -j16 recoveryimage
    exit
    EOF
