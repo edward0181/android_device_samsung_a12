@@ -10,8 +10,8 @@ before_script:
 - cd ~/twrp/
 - git config --global user.email "edward0181@gmail.com"
 - git config --global user.name "edward0181"
-- . ~/bin/repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11
-- repo sync --no-repo-verify -c --force-sync --no-clone-bundle --no-tags --optimized-fetch --prune -jnproc
+- ~/bin/repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11
+- ~/bin/repo sync --no-repo-verify -c --force-sync --no-clone-bundle --no-tags --optimized-fetch --prune -jnproc
 script:
  - cd ~/twrp/ && git clone https://github.com/edward0181/android_device_samsung_a12 -b twrp-11.0 device/samsung/a12
  - git clone https://github.com/00p513-dev/android_kernel_samsung_a12.git kernel/samsung/a12
