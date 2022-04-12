@@ -1,7 +1,6 @@
 language: android
 dist: focal
 before install: 
-- sudo apt-get update
 - sudo apt-get install -y python3.9 openssh-server screen python git openjdk-8-jdk android-tools-adb bc bison build-essential curl flex g++-multilib gcc-multilib gnupg gperf imagemagick lib32ncurses-dev lib32readline-dev lib32z1-dev  liblz4-tool libncurses5-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc yasm zip zlib1g-dev libtinfo5 libncurses5
 - sudo wget 'https://storage.googleapis.com/git-repo-downloads/repo' -P /usr/local/sbin/
 - sudo chmod +x /usr/local/sbin/repo
@@ -11,7 +10,4 @@ before install:
 - ./build-twrp.sh
 android:
   components:
-  - platform-tools
-  - build-tools-29.0.0
-  - extra
-  
+  - platform-tools 
