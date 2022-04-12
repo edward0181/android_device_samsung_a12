@@ -34,14 +34,16 @@ fi
 
 cd $WORKSPACE
 repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11
+repo sync
 if [ ! -d $DT_DIR ]; then
     echo "[I] Setting up device tree !"
     mkdir -p $DT_DIR
     git clone $DEVICE_SOURCE $DT_DIR
 fi
 echo "[I] Preparing for build !"
+cd $WORKSPACE
 export ALLOW_MISSING_DEPENDENCIES=true
-source build/envsetup.sh
+. build/envsetup.sh
 lunch twrp_a12-eng
 echo "[I] Build started !"
 mka recoveryimage
