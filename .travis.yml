@@ -1,21 +1,5 @@
-sudo: false
 language: android
 jdk: oraclejdk8
-before_cache:
- - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
- - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-
-cache:
- directories:
- - $HOME/.gradle/caches/
- - $HOME/.gradle/wrapper/
-env:
-  global:
-   - ANDROID_API_LEVEL=29
-   - EMULATOR_API_LEVEL=21
-   - ANDROID_BUILD_TOOLS_VERSION=29.0.0
-   - ANDROID_ABI=google_apis/armeabi-v7a
-   - ADB_INSTALL_TIMEOUT=20 # minutes (2 minutes by default)
 
 android:
   components:
@@ -30,16 +14,12 @@ android:
     # Support library
     - extra-android-support
 
-    - addon-google_apis-google-$ANDROID_API_LEVEL
-    - addon-google_apis-google-$EMULATOR_API_LEVEL
-
-    - sys-img-armeabi-v7a-addon-google_apis-google-$ANDROID_API_LEVEL
-    - sys-img-armeabi-v7a-addon-google_apis-google-$EMULATOR_API_LEVEL
-before_script:
-  - echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a
-  - emulator -avd test -no-skin -no-audio -no-window &
-  - android-wait-for-emulator
-  - adb shell input keyevent 82 &
-  
   script:
-        - ./build-twrp.sh
+   - bash build-twrp.sh
+   
+before_deploy:
+  - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d-%H%M')}
+  - export RELEASE_NAME=TWRP-Realme-3
+  - git tag $TRAVIS_TAG
+deploy:
+  provider: releases
