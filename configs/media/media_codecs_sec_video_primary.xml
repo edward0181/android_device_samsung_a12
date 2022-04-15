@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (C) 2012 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<MediaCodecs>
+    <Decoders>
+        <!--<MediaCodec name="OMX.SEC.h263.sw.dec" type="video/3gpp">
+            <Quirk name="decoder-ignores-streamcorrupt-error" />
+        </MediaCodec>
+        <MediaCodec name="OMX.SEC.vp8.dec" type="video/x-vnd.on2.vp8">
+            <Quirk name="decoder-ignores-streamcorrupt-error" />
+            <Limit name="size" min="64x64" max="2048x2048" />
+            <Feature name="adaptive-playback" />
+        </MediaCodec>
+        <MediaCodec name="OMX.SEC.hevc.sw.dec" type="video/hevc">
+            <Quirk name="decoder-ignores-streamcorrupt-error" />
+            <Limit name="size" min="64x64" max="2048x2048" />
+            <Feature name="adaptive-playback" />
+        </MediaCodec>-->
+        <MediaCodec name="OMX.SEC.avc.sw.dec" type="video/avc">
+            <Quirk name="decoder-ignores-streamcorrupt-error" />
+            <Limit name="size" min="64x64" max="2048x2048" />
+            <Limit name="measured-frame-rate-320x240" range="250-500" />
+            <Feature name="adaptive-playback" />
+        </MediaCodec>
+        <MediaCodec name="OMX.SEC.mpeg4.sw.dec" type="video/mp4v-es" rank="257">
+            <Limit name="measured-frame-rate-176x144" range="800-1600" />
+            <Quirk name="decoder-ignores-streamcorrupt-error" />
+        </MediaCodec>
+        <MediaCodec name="OMX.SEC.vc1.sw.dec" rank="2">
+            <Type name="video/wvc1" />
+            <Type name="video/x-ms-wmv" />
+            <Quirk name="decoder-ignores-streamcorrupt-error" />
+        </MediaCodec>
+    </Decoders>
+</MediaCodecs>

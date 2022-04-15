@@ -1,0 +1,11 @@
+Build.BRAND=MTK
+persist.device_config.runtime_native.usap_pool_enabled=false
+restore.feature.use_samsung_smart_switch_flow=1
+ro.com.google.clientidbase=android-samsung-ss
+ro.com.google.gmsversion=11_202108
+ro.opa.eligible_device=true
+ro.setupwizard.mode=OPTIONAL
+ro.setupwizard.rotation_locked=false
+ro.setupwizard.wifi_on_exit=false
+setupwizard.feature.enable_stencil_partner_customization=1
+setupwizard.theme=glif_v3_light
