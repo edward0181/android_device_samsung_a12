@@ -12,7 +12,7 @@ $ repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manif
 $ git clone https://github.com/edward0181/android_device_samsung_a12 -b twrp-11.0 device/samsung/a12
 
 # Clone a12 kernel
-$ git clone https://github.com/00p513-dev/android_kernel_samsung_a12.git kernel/samsung/a12
+$ git clone https://github.com/edward0181/android_kernel_samsung_a12 kernel/samsung/a12
 
 # Sync
 $ repo sync --no-repo-verify -c --force-sync --no-clone-bundle --no-tags --optimized-fetch --prune -j`nproc`
