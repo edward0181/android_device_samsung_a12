@@ -1,7 +1,7 @@
 ro.display.series=Samsung A12
 ro.product.board=k65v1_64_bsp_titan_rat
 ro.board.platform=mt6765
-#ro.boot.dynamic_partitions=true
+ro.boot.dynamic_partitions=true
 sys.usb.controller=musb-hdrc
 #fbe.metadata.wrappedkey=true
 ro.boot.boot_devices=bootdevice,soc/11230000.mmc,11230000.mmc,soc/11270000.ufshci,11270000.ufshci
