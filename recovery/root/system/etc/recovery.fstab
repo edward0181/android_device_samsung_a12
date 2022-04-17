@@ -1,17 +1,9 @@
-# 1 "vendor/mediatek/proprietary/hardware/fstab/mt6768/fstab.in.mt6768"
-# 1 "<built-in>" 1
-# 1 "<built-in>" 3
-# 341 "<built-in>" 3
-# 1 "<command line>" 1
-# 1 "<built-in>" 2
-# 1 "vendor/mediatek/proprietary/hardware/fstab/mt6768/fstab.in.mt6768" 2
-# 140 "vendor/mediatek/proprietary/hardware/fstab/mt6768/fstab.in.mt6768"
 
 #<src>		<mnt_point>	<type>	<mnt_flags and options>		<fs_mgr_flags>
-system		/system		ext4	rw,barrier=1			wait,logical,first_stage_mount
-vendor		/vendor		ext4	rw,barrier=1			wait,logical,first_stage_mount
-product		/product	ext4	rw,barrier=1			wait,logical,first_stage_mount
-odm		/odm		ext4	ro,barrier=1			wait,logical,first_stage_mount
+system		/system		ext4	ro,barrier=1			wait,logical
+vendor		/vendor		ext4	ro,barrier=1			wait,logical
+product		/product	ext4	ro,barrier=1			wait,logical
+odm			/odm		ext4	ro,barrier=1			wait,logical
 
 /dev/block/platform/bootdevice/by-name/boot	/boot		emmc	defaults		recoveryonly
 /dev/block/platform/bootdevice/by-name/recovery	/recovery	emmc	defaults		recoveryonly
@@ -20,7 +12,7 @@ odm		/odm		ext4	ro,barrier=1			wait,logical,first_stage_mount
 /dev/block/platform/bootdevice/by-name/sec_efs	/efs		ext4	defaults		recoveryonly
 #/dev/block/platform/bootdevice/by-name/carrier	/carrier	ext4	defaults		recoveryonly
 /dev/block/platform/bootdevice/by-name/hidden	/preload	ext4	defaults		recoveryonly
-/dev/block/platform/bootdevice/by-name/misc	/misc		emmc	defaults		recoveryonly
+/dev/block/platform/bootdevice/by-name/misc	/misc		emmc	defaults		defaults
 /dev/block/platform/bootdevice/by-name/md_udc	/metadata	ext4	defaults		wait,first_stage_mount
 # external SD card
 #/dev/block/mmcblk1p1				/sdcard		auto	defaults		recoveryonly
