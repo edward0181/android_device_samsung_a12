@@ -113,11 +113,12 @@ BOARD_SUPER_PARTITION_ERROR_LIMIT := 8015314944
 BOARD_SAMSUNG_DYNAMIC_PARTITIONS_SIZE := 4265607168
 BOARD_SAMSUNG_DYNAMIC_PARTITIONS_PARTITION_LIST := system vendor product odm
 
-# Slightly overprovision dynamic partitions with 50MiB to
-# allow on-device file editing
-BOARD_SYSTEMIMAGE_PARTITION_RESERVED_SIZE := 62428800
-BOARD_VENDORIMAGE_PARTITION_RESERVED_SIZE := 62428800
-BOARD_PRODUCTIMAGE_PARTITION_RESERVED_SIZE := 62428800
+# Overprovision dynamic partitions with 580MiB to
+# allow on-device file editing and OpenGApps, vendor
+# and product remain on 50MiB overprovision
+BOARD_SYSTEMIMAGE_PARTITION_RESERVED_SIZE := 580000000
+BOARD_VENDORIMAGE_PARTITION_RESERVED_SIZE := 52428800
+BOARD_PRODUCTIMAGE_PARTITION_RESERVED_SIZE := 52428800
 
 # System as root
 BOARD_ROOT_EXTRA_FOLDERS := cache carrier data_mirror efs keyrefuge linkerconfig metadata omr optics prism spu
