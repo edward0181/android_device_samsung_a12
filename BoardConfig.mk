@@ -169,3 +169,5 @@ TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
 
 # Making the recovery.img smaller
 BOARD_HAS_NO_REAL_SDCARD := true
+# Compression
+BOARD_RAMDISK_USE_LZMA := true
