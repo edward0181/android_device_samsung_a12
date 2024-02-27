@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2020 The Android Open Source Project
+# Copyright (C) 2024 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,8 @@ DEVICE_PATH := device/samsung/a12
 PRODUCT_RELEASE_NAME := a12
 
 # Inherit from common AOSP config
-$(call inherit-product, $(SRC_TARGET_DIR)/product/base.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
 
 # Inherit some common TWRP stuff.
 $(call inherit-product, vendor/twrp/config/common.mk)
